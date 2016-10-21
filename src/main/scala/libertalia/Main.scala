@@ -28,7 +28,7 @@ object Main {
     while(!stop && it.hasNext) {
       val line = it.next
       if (Cmd.exit == line) stop = true
-      else if (!line.isEmpty) Try { defaultProcessor(line.split("(?<!\\\\) ").toList) } match {
+      else if (!line.isEmpty) Try { defaultProcessor(line.split("(?<!\\\\) ").toList.map(_.filter(_ != '\\'))) } match {
         case Success(res) => print(res + prompt)
         case Failure(ex ) => ex.printStackTrace //print(ex.getMessage + prompt)
       }

@@ -14,7 +14,7 @@ trait DocumentComponent { self: Datastore.type =>
   object Document extends Table("Document") {
     val id    = column[Option[Int], Int]("id", PrimaryKey, AutoIncrement)
     val owner = column[Int]("owner", new ForeignKey(Organization.id))
-    val name  = column[String]("name", Unique)
+    val name  = column[String]("name")
     val text  = column[String]("text")
   }
 
