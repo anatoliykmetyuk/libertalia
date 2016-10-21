@@ -8,4 +8,5 @@ object Cmd {
   val create = "mk"  // Make
   val update = "ch"  // Change
   val delete = "rm"  // Remove
+  val move   = "mv"  // Move
 }

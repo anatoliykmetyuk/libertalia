@@ -41,6 +41,12 @@ trait OrganizationComponent { this: Datastore.type =>
     def remove(id: Int): Unit = withSession { implicit sess =>
       (delete(Organization) where Organization.id === Some(id)).result
     }
+
+    def remove(ids: Seq[Int]): Unit = withSession { implicit sess =>
+      (
+        delete(Organization) where (Organization.id in ids.map(Some(_)))
+      ).result
+    }
   }
 
 }

@@ -10,7 +10,7 @@ import libertalia.data._
 
 object Main {
   val encoding = "utf8"
-  val prompt   = "\n> "
+  val prompt   = "\nlibertalia> "
 
   val modules = Seq(Organization)
 
@@ -29,10 +29,11 @@ object Main {
     while(!stop && it.hasNext) {
       val line = it.next
       if (Cmd.exit == line) stop = true
-      else Try { defaultProcessor(line.split("(?<!\\\\) ").toList) } match {
+      else if (!line.isEmpty) Try { defaultProcessor(line.split("(?<!\\\\) ").toList) } match {
         case Success(res) => print(res + prompt)
-        case Failure(ex ) => print(ex.getMessage + prompt)
+        case Failure(ex ) => ex.printStackTrace //print(ex.getMessage + prompt)
       }
+      else print(prompt)
     }
   }
 }
