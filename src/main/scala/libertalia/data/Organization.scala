@@ -9,30 +9,36 @@ import org.scalarelational.result.QueryResult
 import org.scalarelational.mapper._
 
 trait OrganizationComponent { this: Datastore.type =>
-  object Organization extends MappedTable[Model.Organization]("Organization") {
+  object Organization extends Table("Organization") {
     val id   = column[Option[Int], Int]("id", PrimaryKey, AutoIncrement)
     val name = column[String]("name", Unique)
-
-    override def query = q.to[Model.Organization](Organization)
   }
 
-  def makeOrg(r: QueryResult): Model.Organization =
-    Model.Organization(r(Organization.name), r(Organization.id))
+  object orgs {
+    def make(r: QueryResult): Model.Organization =
+      Model.Organization(r(Organization.name), r(Organization.id))
 
-  def createOrg(org: Model.Organization): Int = withSession { implicit sess =>
-    org.insert.result.id
+    def create(org: Model.Organization): Int = withSession { implicit sess =>
+      insert(Organization.name(org.name)).result
+    }
+
+    def all: List[Model.Organization] = withSession { implicit sess =>
+      val q = select(Organization.*) from Organization
+      q.result.map(make).toList
+    }
+
+    def get(id: Int): Option[Model.Organization] = withSession { implicit sess =>
+      val q = select(Organization.*) from Organization where Organization.id === Some(id)
+      q.result.map(make).toList.headOption
+    }
+
+    def modify(org: Model.Organization): Unit = withSession { implicit sess =>
+      (update(Organization.name(org.name)) where Organization.id === org.id).result
+    }
+
+    def remove(id: Int): Unit = withSession { implicit sess =>
+      (delete(Organization) where Organization.id === Some(id)).result
+    }
   }
 
-  def allOrgs: List[Model.Organization] = withSession { implicit sess =>
-    val q = select(Organization.*) from Organization
-    q.to[Model.Organization](Organization).result.map(makeOrg).toList
-  }
-
-  def updateOrg(org: Model.Organization): Unit = withSession { implicit sess =>
-    org.update.result
-  }
-
-  def deleteOrg(org: Model.Organization): Unit = withSession { implicit sess =>
-    org.delete.result
-  }
 }

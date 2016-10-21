@@ -5,7 +5,7 @@ package libertalia
  */
 object Cmd {
   val exit   = "exit"
-  val create = "new"
-  val update = "mod"
-  val delete = "del"
+  val create = "mk"  // Make
+  val update = "ch"  // Change
+  val delete = "rm"  // Remove
 }

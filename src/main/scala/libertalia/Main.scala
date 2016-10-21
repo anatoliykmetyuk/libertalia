@@ -1,6 +1,7 @@
 package libertalia
 
 import scala.collection.JavaConversions._
+import scala.util._
 
 import org.apache.commons.io.IOUtils
 
@@ -9,6 +10,7 @@ import libertalia.data._
 
 object Main {
   val encoding = "utf8"
+  val prompt   = "\n> "
 
   val modules = Seq(Organization)
 
@@ -19,15 +21,18 @@ object Main {
 
   def main(args: Array[String]): Unit = {
     Datastore.createOrUpgrade()
-    print("Libertalia v0.0.1 console\n> ")
-    
+    print("Libertalia v0.0.1 console" + prompt)
+
     lazy val it: Iterator[String] = IOUtils.lineIterator(System.in, encoding)
 
     var stop = false
     while(!stop && it.hasNext) {
       val line = it.next
       if (Cmd.exit == line) stop = true
-      else print(defaultProcessor(line.split(" ").toList) + "\n> ")
+      else Try { defaultProcessor(line.split("(?<!\\\\) ").toList) } match {
+        case Success(res) => print(res + prompt)
+        case Failure(ex ) => print(ex.getMessage + prompt)
+      }
     }
   }
 }
