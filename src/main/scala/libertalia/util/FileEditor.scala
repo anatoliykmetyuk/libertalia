@@ -18,4 +18,6 @@ class FileEditor(editorPath: String, tmpPrefix: String = "libertalia_", tmpSuffi
     // Read the changes to the file and return them
     FileUtils.readFileToString(tmpFile)
   }
+
+  def create() = edit("")
 }

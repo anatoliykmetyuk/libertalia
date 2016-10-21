@@ -20,7 +20,12 @@ object Document extends Module {
     case x => s"Unknown command: $x"
   }
 
-  def create(name: String): String = ???
+  val editor = new util.FileEditor(config.editorPath)
+
+  def create(name: String): String = {
+    val docBody = editor.create()
+    s"Received document:\n$docBody"
+  }
 
   def list(): String = ???
 

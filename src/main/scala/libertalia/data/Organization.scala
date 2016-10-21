@@ -8,45 +8,28 @@ import org.scalarelational.versioning.VersioningSupport
 import org.scalarelational.result.QueryResult
 import org.scalarelational.mapper._
 import org.scalarelational.datatype._
+import org.scalarelational.column._
 
-trait OrganizationComponent { this: Datastore.type =>
+trait OrganizationComponent { self: Datastore.type =>
   object Organization extends Table("Organization") {
     val id     = column[Option[Int], Int]("id", PrimaryKey, AutoIncrement)
     val parent = column[Option[Int], Int]("parent", new ForeignKey(id))
     val name   = column[String]("name", Unique)
   }
 
-  object orgs {
-    def make(r: QueryResult): Model.Organization =
-      Model.Organization(r(Organization.name), r(Organization.parent), r(Organization.id))
+  object orgs extends Crud[Int, Model.Organization] {
+    override val table     = Organization
+    override val datastore = self
 
-    def create(org: Model.Organization): Int = withSession { implicit sess =>
-      insert(Organization.name(org.name), Organization.parent(org.parent)).result
-    }
+    override def extractModel(r: QueryResult): Model.Organization = Model.Organization(
+      r(table.name  )
+    , r(table.parent)
+    , r(table.id   ))
 
-    def all: List[Model.Organization] = withSession { implicit sess =>
-      val q = select(Organization.*) from Organization
-      q.result.map(make).toList
-    }
-
-    def get(id: Int): Option[Model.Organization] = withSession { implicit sess =>
-      val q = select(Organization.*) from Organization where Organization.id === Some(id)
-      q.result.map(make).toList.headOption
-    }
-
-    def modify(org: Model.Organization): Unit = withSession { implicit sess =>
-      (update(Organization.name(org.name), Organization.parent(org.parent)) where Organization.id === org.id).result
-    }
-
-    def remove(id: Int): Unit = withSession { implicit sess =>
-      (delete(Organization) where Organization.id === Some(id)).result
-    }
-
-    def remove(ids: Seq[Int]): Unit = withSession { implicit sess =>
-      (
-        delete(Organization) where (Organization.id in ids.map(Some(_)))
-      ).result
-    }
+    override def modelToRequest(m: Model.Organization): Seq[ColumnValue[_, _]] = Seq(
+      table.name(m.name)
+    , table.parent(m.parent)
+    , table.id(m.id)
+    )
   }
-
 }
