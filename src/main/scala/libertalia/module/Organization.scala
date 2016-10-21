@@ -4,10 +4,6 @@ package module
 import data._
 import Datastore.orgs
 
-import cats._
-import cats.syntax.all._
-import cats.instances.all._
-
 object Organization extends Module with ShowHierarchy {
   override val name = "org"
   override val processor: ProcessCmd = {
@@ -80,8 +76,8 @@ trait ShowHierarchy {
     hr.toList.map { case (org, children) =>
       val orgStr = " " * ident + showOrg(org)
       val childrenStr = showHierarchy(children, ident + identStep)
-      if (!childrenStr.isEmpty) s"$orgStr\n$childrenStr\n" else s"$orgStr\n"
-    }.combineAll.reverse.dropWhile(_ == '\n').reverse
+      if (!childrenStr.isEmpty) s"$orgStr\n$childrenStr" else s"$orgStr"
+    }.mkString("\n")
   }
 
   def showOrg(org: Model.Organization): String = {

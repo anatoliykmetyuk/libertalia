@@ -9,4 +9,5 @@ object Cmd {
   val update = "ch"  // Change
   val delete = "rm"  // Remove
   val move   = "mv"  // Move
+  val open   = "op"  // Open
 }
