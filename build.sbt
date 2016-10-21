@@ -1,4 +1,5 @@
 val ScalaVer = "2.11.8"
+val Scalarelational = "1.3.4"
 
 lazy val commonSettings = Seq(
   name    := "Libertalia"
@@ -7,6 +8,11 @@ lazy val commonSettings = Seq(
 , libraryDependencies ++= Seq(
     "org.typelevel"  %% "cats"      % "0.7.2"
   , "com.chuusai"    %% "shapeless" % "2.3.2"
+
+  , "org.scalarelational" %% "scalarelational-core"       % Scalarelational
+  , "org.scalarelational" %% "scalarelational-mapper"     % Scalarelational
+  , "org.scalarelational" %% "scalarelational-mariadb"    % Scalarelational
+  , "org.scalarelational" %% "scalarelational-versioning" % Scalarelational
 
   , "commons-io" % "commons-io" % "2.5"
 
@@ -21,7 +27,7 @@ lazy val commonSettings = Seq(
       "-language:implicitConversions",
       "-language:experimental.macros",
       "-unchecked",
-      "-Xfatal-warnings",
+      // "-Xfatal-warnings",
       "-Xlint",
       "-Yinline-warnings",
       "-Ywarn-dead-code",
