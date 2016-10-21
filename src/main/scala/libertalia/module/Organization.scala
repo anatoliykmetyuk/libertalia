@@ -7,22 +7,27 @@ import Datastore.orgs
 object Organization extends Module {
   override val name = "org"
   override val processor: ProcessCmd = {
-    case Cmd.create :: name :: Nil       => create(name)
-    case Nil                             => list()
-    case Cmd.update :: id :: name :: Nil => update(id.toInt, name)
-    case Cmd.delete :: id :: Nil         => delete(id.toInt)
+    case Cmd.create :: name :: args       => create(name, args)
+    case Nil                              => list()
+    case id :: Nil                        => read(id.toInt)
+    case Cmd.update :: id :: name :: args => update(id.toInt, name, args)
+    case Cmd.delete :: id :: Nil          => delete(id.toInt)
     case x => s"Unknown command: $x"
   }
 
-  def create(name: String): String = {
-    val id = orgs.create(Model.Organization(name))
+  def create(name: String, args: List[String]): String = {
+    val maybeParent = args.headOption.map(_.toInt)
+    val id = orgs.create(Model.Organization(name, maybeParent))
     reportOrg(id, "Organization created")
   }
 
   def list(): String = orgs.all.mkString("\n")
 
-  def update(id: Int, name: String) = {
-    orgs.modify(Model.Organization(name, Some(id)))
+  def read(id: Int): String = orgs.get(id).toString
+
+  def update(id: Int, name: String, args: List[String]) = {
+    val maybeParent = args.headOption.map(_.toInt)
+    orgs.modify(Model.Organization(name, maybeParent, Some(id)))
     reportOrg(id, "Organization updated")
   }
 

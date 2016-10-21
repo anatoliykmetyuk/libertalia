@@ -7,19 +7,21 @@ import org.scalarelational.table.Table
 import org.scalarelational.versioning.VersioningSupport
 import org.scalarelational.result.QueryResult
 import org.scalarelational.mapper._
+import org.scalarelational.datatype._
 
 trait OrganizationComponent { this: Datastore.type =>
   object Organization extends Table("Organization") {
-    val id   = column[Option[Int], Int]("id", PrimaryKey, AutoIncrement)
-    val name = column[String]("name", Unique)
+    val id     = column[Option[Int], Int]("id", PrimaryKey, AutoIncrement)
+    val parent = column[Option[Int], Int]("parent", new ForeignKey(id))
+    val name   = column[String]("name", Unique)
   }
 
   object orgs {
     def make(r: QueryResult): Model.Organization =
-      Model.Organization(r(Organization.name), r(Organization.id))
+      Model.Organization(r(Organization.name), r(Organization.parent), r(Organization.id))
 
     def create(org: Model.Organization): Int = withSession { implicit sess =>
-      insert(Organization.name(org.name)).result
+      insert(Organization.name(org.name), Organization.parent(org.parent)).result
     }
 
     def all: List[Model.Organization] = withSession { implicit sess =>
@@ -33,7 +35,7 @@ trait OrganizationComponent { this: Datastore.type =>
     }
 
     def modify(org: Model.Organization): Unit = withSession { implicit sess =>
-      (update(Organization.name(org.name)) where Organization.id === org.id).result
+      (update(Organization.name(org.name), Organization.parent(org.parent)) where Organization.id === org.id).result
     }
 
     def remove(id: Int): Unit = withSession { implicit sess =>
