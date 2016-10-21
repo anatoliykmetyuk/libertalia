@@ -16,7 +16,8 @@ object Datastore
   with HikariSupport
   with VersioningSupport
   with OrganizationComponent
-  with DocumentComponent {
+  with DocumentComponent
+  with MessageComponent {
     
   DatastoreVersions.versions.foreach(register)
 
@@ -38,5 +39,6 @@ object DatastoreVersions {
   val versions = Seq(
     ver(1) { implicit sess => create(Organization) }
   , ver(2) { implicit sess => create(Document    ) }
+  , ver(3) { implicit sess => create(Message     ) }
   )
 }

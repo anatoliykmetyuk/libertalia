@@ -15,4 +15,14 @@ object Model {
   , owner: Int
   , id   : Option[Int] = None
   )
+
+  case class Message(
+    title    : String
+  , text     : String
+  , sender   : Int
+  , recipient: Int
+  , timestamp: java.sql.Timestamp
+  , id       : Option[Int] = None
+  , seen     : Boolean = false
+  )
 }
