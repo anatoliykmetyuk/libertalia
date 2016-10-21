@@ -28,11 +28,18 @@ object Main {
     while(!stop && it.hasNext) {
       val line = it.next
       if (Cmd.exit == line) stop = true
-      else if (!line.isEmpty) Try { defaultProcessor(line.split("(?<!\\\\) ").toList.map(_.filter(_ != '\\'))) } match {
+      else if (!line.isEmpty) Try { defaultProcessor(parseArgs(line)) } match {
         case Success(res) => print(res + prompt)
         case Failure(ex ) => ex.printStackTrace //print(ex.getMessage + prompt)
       }
       else print(prompt)
     }
+  }
+
+  def parseArgs(line: String): List[String] = {
+    val chars = """a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+\-';,\."""
+    val cmds  = s"""[$chars]+|\"[$chars ]+\"""".r
+
+    cmds.findAllIn(line).toList.map(_.filter(_ != '"'))
   }
 }
