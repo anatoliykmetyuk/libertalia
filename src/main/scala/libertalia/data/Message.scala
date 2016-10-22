@@ -14,7 +14,7 @@ trait MessageComponent { self: Datastore.type =>
   object Message extends Table("Message") {
     val id        = column[Option[Int], Int  ]("id", PrimaryKey, AutoIncrement)
     val title     = column[String            ]("title")
-    val text      = column[String            ]("text")
+    val text      = column[String            ]("text", MediumText)
     val sender    = column[Int               ]("sender", new ForeignKey(Organization.id))
     val recipient = column[Int               ]("recipient", new ForeignKey(Organization.id))
     val timestamp = column[java.sql.Timestamp]("timestamp")

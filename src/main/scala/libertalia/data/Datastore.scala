@@ -7,6 +7,7 @@ import org.scalarelational.mariadb.{MariaDBConfig, MariaDBDatastore}
 import org.scalarelational.table.Table
 import org.scalarelational.versioning._
 import org.scalarelational.result.QueryResult
+import org.scalarelational.datatype.{SimpleDataType, SQLType}
 
 
 object Datastore
@@ -18,6 +19,8 @@ object Datastore
   with OrganizationComponent
   with DocumentComponent
   with MessageComponent {
+
+  val MediumText = new SimpleDataType[String](java.sql.Types.VARCHAR, SQLType("MEDIUMTEXT"))
     
   DatastoreVersions.versions.foreach(register)
 
