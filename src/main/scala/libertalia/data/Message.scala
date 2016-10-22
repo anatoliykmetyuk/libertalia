@@ -16,14 +16,15 @@ trait MessageComponent { self: Datastore.type =>
     val title     = column[String            ]("title")
     val text      = column[String            ]("text")
     val sender    = column[Int               ]("sender", new ForeignKey(Organization.id))
-    val recipient = column[Int               ]("recipient"  , new ForeignKey(Organization.id))
+    val recipient = column[Int               ]("recipient", new ForeignKey(Organization.id))
     val timestamp = column[java.sql.Timestamp]("timestamp")
     val seen      = column[Boolean           ]("seen")
   }
 
-  object msgs extends Crud[Int, Model.Message] {
-    override val table     = Message
-    override val datastore = self
+  object msgs extends Crud[Int, Model.Message] with Possessive[Int, Int, Model.Message] {
+    override val table      = Message
+    override val datastore  = self
+    override val foreignKey = table.recipient
 
     override def extractModel(r: QueryResult): Model.Message = Model.Message(
       r(table.title)

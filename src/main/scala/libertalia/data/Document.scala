@@ -18,9 +18,10 @@ trait DocumentComponent { self: Datastore.type =>
     val text  = column[String]("text")
   }
 
-  object docs extends Crud[Int, Model.Document] {
-    override val table     = Document
-    override val datastore = self
+  object docs extends Crud[Int, Model.Document] with Possessive[Int, Int, Model.Document] {
+    override val table      = Document
+    override val datastore  = self
+    override val foreignKey = table.owner
 
     override def extractModel(r: QueryResult): Model.Document = Model.Document(
       r(table.name)
