@@ -6,7 +6,7 @@ import data._
 import cats.Show
 import cats.syntax.show._
 
-object Document extends CrudModule[Model.Document, Datastore.docs.type] with ShowDocument {
+object Document extends CrudModule[Model.Document, Datastore.docs.type] with PossessiveModule[Model.Document, Datastore.docs.type] with ShowDocument {
   override val name   = "doc"
   override val source = Datastore.docs
   val editor          = new util.FileEditor(config.editorPath)
@@ -18,7 +18,7 @@ object Document extends CrudModule[Model.Document, Datastore.docs.type] with Sho
     case Cmd.move   :: id    :: newOwner :: Nil  => update(id.toInt) { d => d.copy(owner = newOwner.toInt)                  }
   }
 
-  override val processor = documentProcessor orElse crudProcessor
+  override val processor = documentProcessor orElse possessiveProcessor orElse crudProcessor
 }
 
 trait ShowDocument extends ShowEntity[Model.Document] {

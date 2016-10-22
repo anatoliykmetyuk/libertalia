@@ -13,7 +13,7 @@ import org.scalarelational.model.SQLDatastore
 import org.scalarelational.column._
 
 /** Aware that this entity belongs to some other entity. */
-trait Possessive[Id, RefId, EntityModel <: {val id: Option[Id]}] { this: Crud[Id, EntityModel] =>
+trait Possessive[Id, RefId, EntityModel <: {val id: Option[Id]}] extends Crud[Id, EntityModel] {
   import datastore._
 
   def foreignKey: Column[RefId, RefId]

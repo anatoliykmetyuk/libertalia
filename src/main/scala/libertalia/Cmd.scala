@@ -10,4 +10,5 @@ object Cmd {
   val delete = "rm"  // Remove
   val move   = "mv"  // Move
   val open   = "op"  // Open
+  val of     = "of"  // Of, possessive. Returns only entities belonging to a particular foreign entity.
 }

@@ -6,7 +6,7 @@ import data._
 import cats.Show
 import cats.syntax.show._
 
-object Message extends CrudModule[Model.Message, Datastore.msgs.type] with ShowMessage {
+object Message extends CrudModule[Model.Message, Datastore.msgs.type] with PossessiveModule[Model.Message, Datastore.msgs.type]  with ShowMessage {
   override val name   = "msg"
   override val source = Datastore.msgs
   val editor          = new util.FileEditor(config.editorPath)
@@ -17,7 +17,7 @@ object Message extends CrudModule[Model.Message, Datastore.msgs.type] with ShowM
     case Cmd.open   :: id                   :: Nil  => update(id.toInt) { d => d.copy(               text = editor.edit(d.text))     }
   }
 
-  override val processor = messageProcessor orElse crudProcessor
+  override val processor = messageProcessor orElse possessiveProcessor orElse crudProcessor
 }
 
 trait ShowMessage extends ShowEntity[Model.Message] {
