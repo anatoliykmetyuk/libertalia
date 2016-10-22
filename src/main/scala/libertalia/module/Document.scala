@@ -26,7 +26,7 @@ trait ShowDocument extends ShowEntity[Model.Document] {
 
   override implicit val showEntity: Show[Model.Document] = Show.show { doc =>
     import doc._
-    s"${id.get} $name; owned by: $owner; snippet:\n${text.take(snippetSize)}"    
+    s"${id.get} Owner: $owner; Title: $name"    
   }
 
   override implicit val showList: Show[List[Model.Document]] = Show.show(_.map(_.show).mkString("\n\n"))
