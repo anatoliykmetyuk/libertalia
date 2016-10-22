@@ -12,9 +12,9 @@ object Message extends CrudModule[Model.Message, Datastore.msgs.type] with Posse
   val editor          = new util.FileEditor(config.editorPath)
 
   val messageProcessor: ProcessCmd = {
-    case Cmd.create :: from  :: to :: title :: Nil  => create           { Model.Message(title, editor.create(), from.toInt, to.toInt) }
-    case Cmd.update :: id          :: title :: Nil  => update(id.toInt) { d => d.copy(title = title, text = editor.edit(d.text))      }
-    case Cmd.open   :: id                   :: Nil  => update(id.toInt) { d => d.copy(               text = editor.edit(d.text))      }
+    case Cmd.create :: from  :: to :: title :: Nil  => create           { Model.Message(title, editor.create(), from.toInt, to.toInt)  }
+    case Cmd.update :: id          :: title :: Nil  => update(id.toInt) { d => d.copy(title = title, text = editor.edit(d.text))       }
+    case Cmd.open   :: id                   :: Nil  => update(id.toInt) { d => d.copy(               text = editor.edit(d.text, true)) }
   }
 
   override val processor = messageProcessor orElse possessiveProcessor orElse crudProcessor
