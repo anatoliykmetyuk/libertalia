@@ -27,6 +27,11 @@ trait CrudModule[EntityModel <: {val id: Option[Int]}, Source <: Crud[Int, Entit
 
   def read(id: Int): String = source.get(id).get.show
 
+  def inspect(id: Int)(f: EntityModel => String): String = {
+    val existing = source.get(id).get
+    f(existing)
+  }
+
   def update(id: Int)(mod: EntityModel => EntityModel): String = {
     val existing = source.get(id).get
     source.modify(mod(existing))

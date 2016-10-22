@@ -25,4 +25,6 @@ class FileEditor(editorPath: String, tmpPrefix: String = "libertalia_", tmpSuffi
   }
 
   def create() = edit("")
+
+  def read(str: String) = edit(str, true)
 }
