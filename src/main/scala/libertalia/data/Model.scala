@@ -21,7 +21,7 @@ object Model {
   , text     : String
   , sender   : Int
   , recipient: Int
-  , timestamp: java.sql.Timestamp
+  , timestamp: java.sql.Timestamp = new java.sql.Timestamp(System.currentTimeMillis)
   , id       : Option[Int] = None
   , seen     : Boolean = false
   )

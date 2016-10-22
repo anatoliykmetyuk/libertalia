@@ -11,7 +11,7 @@ import libertalia.data._
 object Main {
   val encoding = "utf8"
   val prompt   = "\nlibertalia> "
-  val modules  = Seq(Organization, Document)
+  val modules  = Seq(Organization, Document, Message)
 
   val defaultProcessor: ProcessCmd = { case moduleName :: args =>
     modules.find(_.name == moduleName).map(_.processor(args))
