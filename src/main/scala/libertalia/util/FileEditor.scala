@@ -12,16 +12,13 @@ class FileEditor(editorPath: String, tmpPrefix: String = "libertalia_", tmpSuffi
     FileUtils.write(tmpFile, str, encoding)
 
     // Open that file in the editora
-    def exec(cmds: String*): Process = Runtime.getRuntime.exec(cmds.toArray)
-    
+
+    val proc = Runtime.getRuntime.exec(Array(editorPath, tmpFile.getAbsolutePath))
     if (!readOnly) {
-      exec(editorPath, tmpFile.getAbsolutePath).waitFor()
+      proc.waitFor()
       FileUtils.readFileToString(tmpFile)
     }
-    else {
-      exec(editorPath, tmpFile.getAbsolutePath, "&")
-      ""
-    }
+    else ""
   }
 
   def create() = edit("")
