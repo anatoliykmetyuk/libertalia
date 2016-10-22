@@ -15,6 +15,7 @@ object Message extends CrudModule[Model.Message, Datastore.msgs.type] with Posse
     case Cmd.create :: from  :: to :: title :: Nil  => create           { Model.Message(title, editor.create(), from.toInt, to.toInt)  }
     case Cmd.update :: id          :: title :: Nil  => update(id.toInt) { d => d.copy(title = title, text = editor.edit(d.text))       }
     case Cmd.open   :: id                   :: Nil  => update(id.toInt) { d => d.copy(               text = editor.edit(d.text, true)) }
+    case "tgl"      :: id                   :: Nil  => update(id.toInt) { d => d.copy(seen = !d.seen)                                  }
   }
 
   override val processor = messageProcessor orElse possessiveProcessor orElse crudProcessor
@@ -28,7 +29,7 @@ trait ShowMessage extends ShowEntity[Model.Message] {
     s"${id.get} Seen: $seen; Time: ${timestamp.show}; From: $sender; Title: $title"
   }
 
-  override implicit val showList: Show[List[Model.Message]] = Show.show(_.map(_.show).mkString("\n======\n"))
+  override implicit val showList: Show[List[Model.Message]] = Show.show(_.map(_.show).mkString("\n"))
 
   implicit val showTimestamp: Show[java.sql.Timestamp] = Show.show(_.toString)
 }
