@@ -10,14 +10,13 @@ object Organization extends CrudModule[Model.Organization, Datastore.orgs.type] 
   override val name   = "org"
   override val source = Datastore.orgs
   val organizationProcessor: ProcessCmd = {
-    case Cmd.create         :: name     :: args => create           { Model.Organization    (name, maybeHeadInt(args  ))     }
-    case Cmd.update :: id   :: name     :: args => update(id.toInt) { _.copy(name = name, parent = maybeHeadInt(args  ))     }
-    case Cmd.move   :: id   :: newOwner :: Nil  => update(id.toInt) { _.copy(             parent = Some(newOwner.toInt))     }
+    case Cmd.create ::          name     :: Nil  => create           { Model.Organization(name, None)              }
+    case Cmd.create :: owner :: name     :: Nil  => create           { Model.Organization(name, Some(owner.toInt)) }
+    case Cmd.update :: id    :: name     :: args => update(id.toInt) { _.copy(name = name, parent = args.headOption.map(_.toInt))     }
+    case Cmd.move   :: id    :: newOwner :: Nil  => update(id.toInt) { _.copy(             parent = Some(newOwner.toInt))             }
   }
   
   override val processor = organizationProcessor orElse crudProcessor
-
-  def maybeHeadInt(args: List[String]): Option[Int] = args.headOption.map(_.toInt)
 }
 
 trait ShowOrganization extends ShowEntity[Model.Organization] {
