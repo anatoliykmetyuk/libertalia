@@ -18,8 +18,13 @@ trait Possessive[Id, RefId, EntityModel <: {val id: Option[Id]}] extends Crud[Id
 
   def foreignKey: Column[RefId, RefId]
 
-  def allOf(ref: RefId): List[EntityModel] = withSession { implicit sess =>
+  def ownedBy(ref: RefId): List[EntityModel] = withSession { implicit sess =>
     val q = select(table.*) from table where foreignKey === ref
     q.result.map(extractModel).toList
+  }
+
+  def ownedByCount(ref: RefId): Int = withSession { implicit sess =>
+    val q = select(Count(table.id)) from table where foreignKey === ref
+    q.converted.head.toInt
   }
 }

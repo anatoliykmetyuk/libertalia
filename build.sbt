@@ -33,8 +33,13 @@ lazy val commonSettings = Seq(
       "-Ywarn-dead-code",
       "-Xfuture")
 
+// Kind projector
 , resolvers += Resolver.sonatypeRepo("releases")
 , addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.2")
+
+// Simulacrum
+, addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+, libraryDependencies += "com.github.mpilquist" %% "simulacrum" % "0.10.0"
 )
 
 lazy val root = (project in file("."))
