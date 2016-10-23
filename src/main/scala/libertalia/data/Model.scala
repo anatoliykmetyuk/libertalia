@@ -25,4 +25,11 @@ object Model {
   , id       : Option[Int] = None
   , seen     : Boolean = false
   )
+
+  case class Time(
+    amount: Int
+  , reason: String
+  , owner : Int
+  , id    : Option[Int] = None
+  )
 }

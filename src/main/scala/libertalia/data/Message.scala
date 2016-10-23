@@ -1,5 +1,7 @@
 package libertalia.data
 
+import scala.language.postfixOps
+
 import org.scalarelational.column.property._
 import org.scalarelational.extra.HikariSupport
 import org.scalarelational.mariadb.{MariaDBConfig, MariaDBDatastore}
@@ -47,6 +49,13 @@ trait MessageComponent { self: Datastore.type =>
     def unreadCount(ref: Int): Int = withSession { implicit sess =>
       val q = select(Count(table.id)) from table where foreignKey === ref and table.seen === false
       q.converted.head.toInt
+    }
+
+    override def ownedBy(ref: Int): List[Model.Message] = withSession { implicit sess =>
+      val q = (
+        select(table.*) from table where foreignKey === ref
+        orderBy(table.timestamp desc))
+      q.result.map(extractModel).toList
     }
   }
 }
