@@ -43,5 +43,10 @@ trait MessageComponent { self: Datastore.type =>
     , table.timestamp(m.timestamp)
     , table.id(m.id)
     , table.seen(m.seen))
+
+    def unreadCount(ref: Int): Int = withSession { implicit sess =>
+      val q = select(Count(table.id)) from table where foreignKey === ref and table.seen === false
+      q.converted.head.toInt
+    }
   }
 }

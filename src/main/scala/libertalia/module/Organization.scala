@@ -18,12 +18,13 @@ object Organization extends CrudModule[Model.Organization, Datastore.orgs.type] 
   }
   override val processor = organizationProcessor orElse crudProcessor
 
-  def charToDatasource(c: Char): Possessive[Int, Int, _] = c match {
-    case 'd' => Datastore.docs
+  def charToCount(c: Char, o: Int): Int = c match {
+    case 'd' => Datastore.docs.ownedByCount(o)
+    case 'm' => Datastore.msgs.unreadCount(o)
   }
 
   def listVerbModel(cfg: List[Char]): List[Meta[Model.Organization]] = source.all.map { o =>
-    val numbers: List[Int] = cfg.map(charToDatasource(_).ownedByCount(o.id.get))
+    val numbers: List[Int] = cfg.map(charToCount(_, o.id.get))
     o -> numbers
   }
 
