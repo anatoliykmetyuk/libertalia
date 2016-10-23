@@ -27,9 +27,10 @@ object Model {
   )
 
   case class Time(
-    amount: Int
-  , reason: String
-  , owner : Int
-  , id    : Option[Int] = None
+    amount   : Int
+  , reason   : String
+  , owner    : Int
+  , timestamp: java.sql.Timestamp = new java.sql.Timestamp(System.currentTimeMillis)
+  , id       : Option[Int] = None
   )
 }

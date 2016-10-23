@@ -19,8 +19,9 @@ object Organization extends CrudModule[Model.Organization, Datastore.orgs.type] 
   override val processor = organizationProcessor orElse crudProcessor
 
   def charToCount(c: Char, o: Int): Int = c match {
-    case 'd' => Datastore.docs.ownedByCount(o)
-    case 'm' => Datastore.msgs.unreadCount(o)
+    case 'd' => Datastore.docs .ownedByCount(o)
+    case 'm' => Datastore.msgs .unreadCount (o)
+    case 't' => Datastore.times.ownedBySum  (o)
   }
 
   def listVerbModel(cfg: List[Char]): List[Meta[Model.Organization]] = source.all.map { o =>

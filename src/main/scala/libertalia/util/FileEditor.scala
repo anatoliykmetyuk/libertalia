@@ -16,7 +16,7 @@ class FileEditor(editorPath: String, tmpPrefix: String = "libertalia_", tmpSuffi
     val proc = Runtime.getRuntime.exec(Array(editorPath, tmpFile.getAbsolutePath))
     if (!readOnly) {
       proc.waitFor()
-      FileUtils.readFileToString(tmpFile)
+      FileUtils.readFileToString(tmpFile, "utf8")
     }
     else ""
   }

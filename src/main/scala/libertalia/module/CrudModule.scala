@@ -50,6 +50,8 @@ trait CrudModule[EntityModel <: {val id: Option[Int]}, Source <: Crud[Int, Entit
 }
 
 trait ShowEntity[EntityModel] {
-  implicit def showEntity: Show[EntityModel]
-  implicit def showList  : Show[List[EntityModel]]
+  implicit val showEntity: Show[EntityModel]
+  implicit val showList  : Show[List[EntityModel]] = Show.show(_.map(_.show).mkString("\n"))
+
+  implicit val showTimestamp: Show[java.sql.Timestamp] = Show.show(_.toString)
 }

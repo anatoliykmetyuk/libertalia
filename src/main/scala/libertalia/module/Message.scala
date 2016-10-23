@@ -29,8 +29,4 @@ trait ShowMessage extends ShowEntity[Model.Message] {
     import msg._
     s"${id.get} Seen: $seen; Time: ${timestamp.show}; From: $sender; Title: $title"
   }
-
-  override implicit val showList: Show[List[Model.Message]] = Show.show(_.map(_.show).mkString("\n"))
-
-  implicit val showTimestamp: Show[java.sql.Timestamp] = Show.show(_.toString)
 }

@@ -18,7 +18,8 @@ object Datastore
   with VersioningSupport
   with OrganizationComponent
   with DocumentComponent
-  with MessageComponent {
+  with MessageComponent
+  with TimeComponent {
 
   val MediumText = new SimpleDataType[String](java.sql.Types.VARCHAR, SQLType("MEDIUMTEXT"))
     
@@ -39,9 +40,11 @@ object DatastoreVersions {
     override def upgrade(implicit session: Session) = diff(session)
   }
 
+  def mkTable(n: Int, tbl: Table) = ver(n) { implicit sess => create(tbl) }
+
   val versions = Seq(
-    ver(1) { implicit sess => create(Organization) }
-  , ver(2) { implicit sess => create(Document    ) }
-  , ver(3) { implicit sess => create(Message     ) }
-  )
+    mkTable(1, Organization)
+  , mkTable(2, Document    )
+  , mkTable(3, Message     )
+  , mkTable(4, Time        ))
 }
