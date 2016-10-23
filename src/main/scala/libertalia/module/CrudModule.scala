@@ -15,6 +15,13 @@ trait CrudModule[EntityModel <: {val id: Option[Int]}, Source <: Crud[Int, Entit
 
   override def processor = crudProcessor orElse super.processor
 
+  override def helpData = List(
+    (List(("empty" , true )), "List all the entities")
+  , (List(("id"    , true )), "Print an entity with the given id")
+  , (List(("delete", false), ("id", true)), "Delete an entity with the given id")
+  ) ++ super.helpData
+
+
   val source: Source
 
 

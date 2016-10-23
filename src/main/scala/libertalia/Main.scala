@@ -27,7 +27,7 @@ object Main {
    |Valid modules:
    |$modulesStr
    |
-   |To find out more about what <module_command> each module accepts, enter: <module_name> help.
+   |To find out more about what <module_command> each module accepts, enter: help <module_name>.
    |""".stripMargin
  }
 

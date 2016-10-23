@@ -19,8 +19,8 @@ object Help extends Module with ShowHelp {
 }
 
 trait ShowHelp extends ShowEntity[Module.HelpEntry] {
-  override implicit val showEntity: Show[Module.HelpEntry] = Show.show { case (args, description, example) =>
+  override implicit val showEntity: Show[Module.HelpEntry] = Show.show { case (args, description) =>
     val argStr: String = args.map { case (name, isVar) => if (isVar) s"<$name>" else name }.mkString(" ")
-    s"$argStr - $description - $example"
+    String.format("%-20s - %s", argStr, description)
   }
 }
