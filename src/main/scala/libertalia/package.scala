@@ -7,9 +7,7 @@ package object libertalia {
   type ProcessCmd = PartialFunction[List[String], String]
 
   val config = {
-    val homeDir    = new File(System.getProperty("user.home"))
-    val configFile = new java.io.File(homeDir, ".libertalia")
-    val encoding = "utf8"
+    import Config._
 
     if (!configFile.exists) {
       println(s"Please configure a text file editor at ${configFile.getAbsolutePath}")
