@@ -14,15 +14,14 @@ import java.io.File
 
 object Main {
   val version = "0.0.1"
-  val modules = Seq(Organization, Document, Message, Time)
 
   val defaultProcessor: ProcessCmd = { case moduleName :: args =>
-    modules.find(_.name == moduleName).map(_.processor(args))
+    Module.all.find(_.name == moduleName).map(_.processor(args))
       .getOrElse(s"Unknown module: $moduleName")
   }
 
   val helpMessage = {
-    val modulesStr = modules.map { m => String.format("%-5s - %s", m.name, m.description) }.mkString("\n")
+    val modulesStr = Module.all.map { m => String.format("%-5s - %s", m.name, m.description) }.mkString("\n")
     s"""
    |Format of commands: <module_name> <module_command>
    |Valid modules:
