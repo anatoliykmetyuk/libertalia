@@ -7,9 +7,10 @@ import cats.Show
 import cats.syntax.show._
 
 object Message extends CrudModule[Model.Message, Datastore.msgs.type] with PossessiveModule[Model.Message, Datastore.msgs.type]  with ShowMessage {
-  override val name   = "msg"
-  override val source = Datastore.msgs
-  val editor          = new util.FileEditor(config.editorPath)
+  override val name        = "msg"
+  override val description = "Messages between organizations"
+  override val source      = Datastore.msgs
+  val editor               = new util.FileEditor(config.editorPath)
 
   val messageProcessor: ProcessCmd = {
     case Cmd.create :: from  :: to :: title :: Nil  => create            { Model.Message(title, editor.create(), from.toInt, to.toInt)  }

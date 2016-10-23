@@ -7,8 +7,9 @@ import cats.Show
 import cats.syntax.show._
 
 object Organization extends CrudModule[Model.Organization, Datastore.orgs.type] with ShowOrganization {
-  override val name   = "org"
-  override val source = Datastore.orgs
+  override val name        = "org"
+  override val description = "Organizations"
+  override val source      = Datastore.orgs
   val organizationProcessor: ProcessCmd = {
     case Cmd.create ::          name     :: Nil  => create           { Model.Organization(name, None)              }
     case Cmd.create :: owner :: name     :: Nil  => create           { Model.Organization(name, Some(owner.toInt)) }

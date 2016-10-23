@@ -7,9 +7,10 @@ import cats.Show
 import cats.syntax.show._
 
 object Document extends CrudModule[Model.Document, Datastore.docs.type] with PossessiveModule[Model.Document, Datastore.docs.type] with ShowDocument {
-  override val name   = "doc"
-  override val source = Datastore.docs
-  val editor          = new util.FileEditor(config.editorPath)
+  override val name        = "doc"
+  override val description = "Documents of organizations"
+  override val source      = Datastore.docs
+  val editor               = new util.FileEditor(config.editorPath)
 
   val documentProcessor: ProcessCmd = {
     case Cmd.create :: owner :: name     :: Nil  => create(Model.Document(name, editor.create(), owner.toInt))

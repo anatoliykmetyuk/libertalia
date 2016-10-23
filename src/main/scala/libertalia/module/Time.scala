@@ -7,8 +7,9 @@ import cats.Show
 import cats.syntax.show._
 
 object Time extends CrudModule[Model.Time, Datastore.times.type] with PossessiveModule[Model.Time, Datastore.times.type] with ShowTime {
-  override val name   = "time"
-  override val source = Datastore.times
+  override val name        = "time"
+  override val description = "Time in possession of the organizations"
+  override val source      = Datastore.times
 
   def isInt(x: String) = scala.util.Try(x.toInt).isSuccess  // TODO: Create an utility trait
 
