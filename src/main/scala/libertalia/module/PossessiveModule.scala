@@ -11,9 +11,9 @@ trait PossessiveModule[EntityModel <: {val id: Option[Int]}, Source <: Possessiv
     case Cmd.of :: id :: Nil => source.ownedBy(id.toInt).show
   }
 
-  override def helpData = List(
-    (List(("of", false), ("id", true)), "Display all the entities of this module that belong to an organization with a given id")
-  ) ++ super.helpData
+  override def helpData = super.helpData ++ List(
+    (List((Cmd.of, false), ("id", true)), "Display all the entities of this module that belong to an organization with a given id")
+  )
 
   override def processor = possessiveProcessor orElse super.processor
 }

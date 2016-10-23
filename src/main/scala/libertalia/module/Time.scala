@@ -24,6 +24,15 @@ object Time extends CrudModule[Model.Time, Datastore.times.type] with Possessive
     case Cmd.move   :: from :: to :: amount           :: Nil => transfer(from.toInt, to.toInt, amount.toInt, s"Transfer from $from to $to")
   }
 
+  val instanceHelp = List(
+    List(Cmd.create -> false, "owner"-> true, "amount" -> true, "reason" -> true) -> "Grant an organization a certain amount of time"
+  , List(Cmd.create -> false, "owner"-> true, "amount" -> true) -> "Grant an organization a certain amount of time"
+  , List(Cmd.update -> false, "id"   -> true, "amount" -> true) -> "Change the amount of time with a given id"
+  , List(Cmd.update -> false, "id"   -> true, "reason" -> true) -> "Change the reason of a time with a given id"
+  , List(Cmd.move   -> false, "from" -> true, "to"     -> true, "amount" -> true, "reason" -> true) -> "Transfer a given amount of time between organizations"
+  , List(Cmd.move   -> false, "from" -> true, "to"     -> true, "amount" -> true) -> "Transfer a given amount of time between organizations"
+  )
+
   def transfer(from: Int, to: Int, amount: Int, reason: String) = List(
     create { Model.Time(-amount, reason, from) }
   , create { Model.Time( amount, reason, to  ) }

@@ -18,6 +18,15 @@ object Organization extends CrudModule[Model.Organization, Datastore.orgs.type] 
     case Cmd.list   :: cfg               :: Nil  => listVerb(cfg.toList)
   }
 
+  val instanceHelp = List(
+    List(Cmd.create -> false, "name"  -> true) -> "Create an organization with the given name"
+  , List(Cmd.create -> false, "owner" -> true, "name"     -> true ) -> "Create an organization with the given name owned by an organization with the <owner> id"
+  , List(Cmd.update -> false, "id"    -> true, "name"     -> true ) -> "Rename an organization"
+  , List(Cmd.move   -> false, "id"    -> true, "new_owner" -> true) -> "Transfer an organization to another organization"
+  , List(Cmd.list   -> false, "config"   -> true) -> ("List some data specified by flags for this organization. Flags are specified by a string of characters." +
+      "Valid flags: d - documents, m - unread messages, t - time.")
+  )
+
   def charToCount(c: Char, o: Int): Int = c match {
     case 'd' => Datastore.docs .ownedByCount(o)
     case 'm' => Datastore.msgs .unreadCount (o)

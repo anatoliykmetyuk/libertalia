@@ -19,6 +19,14 @@ object Message extends CrudModule[Model.Message, Datastore.msgs.type] with Posse
     case "tgl"      :: id                   :: Nil  => update (id.toInt) { d => d.copy(seen  = !d.seen)                                 }
     case Cmd.open   :: id                   :: Nil  => inspect(id.toInt) { d => editor.read(d.text)                                     }
   }
+
+  val instanceHelp = List(
+    List(Cmd.create -> false, "from" -> true, "to"    -> true, "title" -> true) -> "Send a message from organization with id <from> to <to>"
+  , List(Cmd.update -> false, "id"   -> true, "title" -> true) -> "Rename a message"
+  , List(Cmd.update -> false, "id"   -> true) -> "Edit a message's contents"
+  , List("tgl"      -> false, "id"   -> true) -> "Toggle a message's \"seen\" status"
+  , List(Cmd.open   -> false, "id"   -> true) -> "Read-only access to a message"
+  )
 }
 
 trait ShowMessage extends ShowEntity[Model.Message] {

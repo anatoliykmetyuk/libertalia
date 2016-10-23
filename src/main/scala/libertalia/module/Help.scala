@@ -15,12 +15,16 @@ object Help extends Module with ShowHelp {
     case name :: Nil => s"Unknown module: $name"
   }
 
+  override def instanceHelp = List(
+    List("module_name" -> true) -> "Display help for a module with the given name"
+  )
+
   def displayHelp(m: Module) = m.helpData.show
 }
 
 trait ShowHelp extends ShowEntity[Module.HelpEntry] {
   override implicit val showEntity: Show[Module.HelpEntry] = Show.show { case (args, description) =>
     val argStr: String = args.map { case (name, isVar) => if (isVar) s"<$name>" else name }.mkString(" ")
-    String.format("%-20s - %s", argStr, description)
+    String.format("%-50s - %s", argStr, description)
   }
 }
