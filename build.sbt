@@ -15,7 +15,7 @@ lazy val commonSettings = Seq(
   , "org.scalarelational" %% "scalarelational-versioning" % Scalarelational
 
   , "commons-io" % "commons-io" % "2.5"
-  , "jline" % "jline" % "2.11"
+  , "org.scala-lang" % "jline" % "2.11.0-M3"
 
   , "org.scalatest"  %% "scalatest" % "3.0.0"  % "test"
   )
@@ -47,4 +47,5 @@ lazy val root = (project in file("."))
   .settings(commonSettings)
   .settings(
     initialCommands := "import libertalia._"
+  // , fork in run := true
   )

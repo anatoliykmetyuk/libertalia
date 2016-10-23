@@ -33,6 +33,6 @@ object Time extends CrudModule[Model.Time, Datastore.times.type] with Possessive
 trait ShowTime extends ShowEntity[Model.Time] {
   override implicit val showEntity: Show[Model.Time] = Show.show { t =>
     import t._
-    s"${id.get} Time: ${timestamp.show}; Amount: $amount; Owner: $owner; Reason: $reason"
+    s"${id.get} Time: ${timestamp.show}; Amount: ${if (amount >= 0) s"+$amount" else amount}; Owner: $owner; Reason: $reason"
   }
 }

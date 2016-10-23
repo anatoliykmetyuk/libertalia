@@ -8,11 +8,10 @@ import org.apache.commons.io.IOUtils
 import libertalia.module._
 import libertalia.data._
 
-import jline.console.ConsoleReader
+import scala.tools.jline.console.ConsoleReader
 
 object Main {
   val encoding = "utf8"
-  val prompt   = "\nlibertalia> "
   val modules  = Seq(Organization, Document, Message, Time)
 
   val defaultProcessor: ProcessCmd = { case moduleName :: args =>
