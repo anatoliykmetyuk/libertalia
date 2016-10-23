@@ -15,6 +15,7 @@ lazy val commonSettings = Seq(
   , "org.scalarelational" %% "scalarelational-versioning" % Scalarelational
 
   , "commons-io" % "commons-io" % "2.5"
+  , "jline" % "jline" % "2.11"
 
   , "org.scalatest"  %% "scalatest" % "3.0.0"  % "test"
   )
