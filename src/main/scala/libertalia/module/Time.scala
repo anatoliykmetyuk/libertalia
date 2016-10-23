@@ -13,7 +13,7 @@ object Time extends CrudModule[Model.Time, Datastore.times.type] with Possessive
 
   def isInt(x: String) = scala.util.Try(x.toInt).isSuccess  // TODO: Create an utility trait
 
-  val messageProcessor: ProcessCmd = {
+  val instanceProcessor: ProcessCmd = {
     case Cmd.create :: owner :: amount :: reason :: Nil => create { Model.Time(amount.toInt, reason, owner.toInt) }
     case Cmd.create :: owner :: amount           :: Nil => create { Model.Time(amount.toInt, ""    , owner.toInt) }
 
@@ -23,7 +23,6 @@ object Time extends CrudModule[Model.Time, Datastore.times.type] with Possessive
     case Cmd.move   :: from :: to :: amount :: reason :: Nil => transfer(from.toInt, to.toInt, amount.toInt, reason                       )
     case Cmd.move   :: from :: to :: amount           :: Nil => transfer(from.toInt, to.toInt, amount.toInt, s"Transfer from $from to $to")
   }
-  override val processor = messageProcessor orElse possessiveProcessor orElse crudProcessor
 
   def transfer(from: Int, to: Int, amount: Int, reason: String) = List(
     create { Model.Time(-amount, reason, from) }

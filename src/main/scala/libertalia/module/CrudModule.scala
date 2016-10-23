@@ -11,9 +11,9 @@ trait CrudModule[EntityModel <: {val id: Option[Int]}, Source <: Crud[Int, Entit
     case Nil               => list()
     case id :: Nil         => read(id.toInt)
     case Cmd.delete :: ids => delete(ids.map(_.toInt))
-
-    case x => s"Unknown command: $x"
   }
+
+  override def processor = crudProcessor orElse super.processor
 
   val source: Source
 

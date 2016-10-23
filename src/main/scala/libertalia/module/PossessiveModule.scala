@@ -10,4 +10,6 @@ trait PossessiveModule[EntityModel <: {val id: Option[Int]}, Source <: Possessiv
   val possessiveProcessor: ProcessCmd = {
     case Cmd.of :: id :: Nil => source.ownedBy(id.toInt).show
   }
+
+  override def processor = possessiveProcessor orElse super.processor
 }

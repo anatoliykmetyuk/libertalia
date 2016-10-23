@@ -10,14 +10,13 @@ object Organization extends CrudModule[Model.Organization, Datastore.orgs.type] 
   override val name        = "org"
   override val description = "Organizations"
   override val source      = Datastore.orgs
-  val organizationProcessor: ProcessCmd = {
+  val instanceProcessor: ProcessCmd = {
     case Cmd.create ::          name     :: Nil  => create           { Model.Organization(name, None)              }
     case Cmd.create :: owner :: name     :: Nil  => create           { Model.Organization(name, Some(owner.toInt)) }
     case Cmd.update :: id    :: name     :: args => update(id.toInt) { _.copy(name = name, parent = args.headOption.map(_.toInt))     }
     case Cmd.move   :: id    :: newOwner :: Nil  => update(id.toInt) { _.copy(             parent = Some(newOwner.toInt))             }
     case Cmd.list   :: cfg               :: Nil  => listVerb(cfg.toList)
   }
-  override val processor = organizationProcessor orElse crudProcessor
 
   def charToCount(c: Char, o: Int): Int = c match {
     case 'd' => Datastore.docs .ownedByCount(o)
