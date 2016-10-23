@@ -10,7 +10,7 @@ package object libertalia {
     import Config._
 
     if (!configFile.exists) {
-      println(s"Please configure a text file editor at ${configFile.getAbsolutePath}")
+      println(s"\n\n===\nPlease configure a text file editor at ${configFile.getAbsolutePath}\n===\n")
       FileUtils.write(configFile, "editor=open", encoding)
     }
 

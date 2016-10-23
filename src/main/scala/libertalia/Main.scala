@@ -9,6 +9,8 @@ import libertalia.module._
 import libertalia.data._
 
 import scala.tools.jline.console.ConsoleReader
+import scala.tools.jline.console.history.FileHistory
+import java.io.File
 
 object Main {
   val encoding = "utf8"
@@ -24,16 +26,17 @@ object Main {
 
     val console = new ConsoleReader()
     console.setPrompt("libertalia> ")
+    console.setHistory(new FileHistory(Config.commandHistory)) 
 
     var stop = false
-    while (!stop) {
+    try while (!stop) {
       val line = console.readLine
       if (Cmd.exit == line) stop = true
       else if (!line.isEmpty) Try { defaultProcessor(parseArgs(line)) } match {
         case Success(res) => console.println(res)
         case Failure(ex ) => ex.printStackTrace //print(ex.getMessage + prompt)
       }
-    }
+    } finally console.getHistory.asInstanceOf[FileHistory].flush()
   }
 
   def parseArgs(line: String): List[String] = {
