@@ -2,7 +2,7 @@ package libertalia
 
 import java.io.File
 
-case class Config(editorPath: String)
+case class Config(editorPath: String, quantaPerHour: Double)
 
 object Config {
   val encoding = "utf8"

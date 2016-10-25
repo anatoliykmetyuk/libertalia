@@ -11,7 +11,7 @@ package object libertalia {
 
     if (!configFile.exists) {
       println(s"\n\n===\nPlease configure a text file editor at ${configFile.getAbsolutePath}\n===\n")
-      FileUtils.write(configFile, "editor=open", encoding)
+      FileUtils.write(configFile, "editor=open\nquanta_per_hour=1", encoding)
     }
 
     val cfgMap: Map[String, String] = FileUtils.readLines(configFile, encoding)
@@ -21,6 +21,6 @@ package object libertalia {
         case k :: v :: Nil => Some(k -> v)
         case _ => None
       }}.toMap
-    Config(editorPath = cfgMap("editor"))
+    Config(editorPath = cfgMap("editor"), quantaPerHour = cfgMap("quanta_per_hour").toDouble)
   }
 }

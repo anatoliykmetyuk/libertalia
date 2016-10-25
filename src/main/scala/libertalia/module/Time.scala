@@ -11,8 +11,6 @@ object Time extends CrudModule[Model.Time, Datastore.times.type] with Possessive
   override val description = "Time in possession of the organizations"
   override val source      = Datastore.times
 
-  def isInt(x: String) = scala.util.Try(x.toInt).isSuccess  // TODO: Create an utility trait
-
   val instanceProcessor: ProcessCmd = {
     case Cmd.create :: owner :: amount :: reason :: Nil => create { Model.Time(amount.toInt, reason, owner.toInt) }
     case Cmd.create :: owner :: amount           :: Nil => create { Model.Time(amount.toInt, ""    , owner.toInt) }
@@ -22,6 +20,8 @@ object Time extends CrudModule[Model.Time, Datastore.times.type] with Possessive
 
     case Cmd.move   :: from :: to :: amount :: reason :: Nil => transfer(from.toInt, to.toInt, amount.toInt, reason                       )
     case Cmd.move   :: from :: to :: amount           :: Nil => transfer(from.toInt, to.toInt, amount.toInt, s"Transfer from $from to $to")
+    
+    case "status" :: Nil => timeStatus()
   }
 
   val instanceHelp = List(
@@ -37,6 +37,14 @@ object Time extends CrudModule[Model.Time, Datastore.times.type] with Possessive
     create { Model.Time(-amount, reason, from) }
   , create { Model.Time( amount, reason, to  ) }
   ).mkString("\n")
+
+  def timeStatus(): String = {
+    val spentToday = source.spentBetween(source.todayPlus(0), source.todayPlus(1))
+    val hoursLeftToday = ((source.todayPlus(1) - System.currentTimeMillis) / 1000 / 60 / 60).toInt
+    val leftToday  = config.quantaPerHour * hoursLeftToday
+
+    s"Time diff today: $spentToday; Remaining capacity today: $leftToday"
+  }
 }
 
 trait ShowTime extends ShowEntity[Model.Time] {

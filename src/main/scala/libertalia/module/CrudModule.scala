@@ -8,10 +8,12 @@ import cats.syntax.show._
 
 trait CrudModule[EntityModel <: {val id: Option[Int]}, Source <: Crud[Int, EntityModel]] extends Module { this: ShowEntity[EntityModel] =>
   val crudProcessor: ProcessCmd = {
-    case Nil               => list()
-    case id :: Nil         => read(id.toInt)
-    case Cmd.delete :: ids => delete(ids.map(_.toInt))
+    case Nil                    => list()
+    case id :: Nil if isInt(id) => read(id.toInt)
+    case Cmd.delete :: ids      => delete(ids.map(_.toInt))
   }
+  
+  def isInt(x: String) = scala.util.Try(x.toInt).isSuccess  // TODO: Create an utility trait
 
   override def processor = crudProcessor orElse super.processor
 

@@ -43,5 +43,29 @@ trait TimeComponent { self: Datastore.type =>
       val h = q.result.head.values.head.value  // TODO: Bug in ScalaRelational, where q.converted.head is sometimes `null`
       if (h != null) h.toString.toInt else 0
     }
+
+    // From http://stackoverflow.com/a/11989680/3895471
+    def todayPlus(x: Int = 0) = {
+      import java.util.Calendar
+      val c = Calendar.getInstance()
+      c.add(Calendar.DAY_OF_MONTH, x)
+      c.set(Calendar.HOUR_OF_DAY, 0)
+      c.set(Calendar.MINUTE, 0)
+      c.set(Calendar.SECOND, 0)
+      c.set(Calendar.MILLISECOND, 0)
+      c.getTimeInMillis()
+    }
+
+    def spentBetween(t1: Long, t2: Long): Int = withSession { implicit sess =>
+      import java.sql.Timestamp
+
+      val q = (
+        select(Sum(table.amount) as "foo") from table
+        where { table.timestamp between Seq(new Timestamp(t1), new Timestamp(t2)) }
+      )
+
+      val h = q.result.head.values.head.value  // TODO: Bug in ScalaRelational, where q.converted.head is sometimes `null`
+      if (h != null) h.toString.toInt else 0
+    }
   }
 }
