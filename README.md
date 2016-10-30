@@ -3,7 +3,8 @@ Libertalia is a tool to assist in planning your tasks using the Country model.
 # Installation
 1. Clone the repository
 2. Create MariaDB database named "libertalia" at localhost
-3. Configure the text editor you would like to use for editing files in the `~/.libertalia` file. So far, the only legit entry there is `editor=<editor_command>`. `<editor_command>` should be such that:
+3. Configure the text editor you would like to use for editing files in the `~/.libertalia/.config` file. So far, the only valid entry there is `editor=<editor_command>`.
+  `<editor_command>` should be such that:
     - It accepts one argument for opening the file: `<editor_command> <file_name>`
     - It is blocking, that is after entering it, the command prompt will not appear until you close the editor.
 4. Run it with `sbt run`
@@ -30,21 +31,21 @@ libertalia> org mk President
 Created: 1 President
 libertalia> org
 1 President
-libertalia> org mk "Departmnet of Economy"
-Created: 2 Departmnet of Economy
+libertalia> org mk "Department of Economy"
+Created: 2 Department of Economy
 libertalia> org
 1 President
-2 Departmnet of Economy
+2 Department of Economy
 libertalia> org mv 2 1
-Updated: 2 Departmnet of Economy
+Updated: 2 Department of Economy
 libertalia> org
 1 President
-    2 Departmnet of Economy
+    2 Department of Economy
 libertalia> org mk "Academy of Sciences" 1
 Created: 3 Academy of Sciences
 libertalia> org
 1 President
-    2 Departmnet of Economy
+    2 Department of Economy
     3 Academy of Sciences
 libertalia> msg mk 1 2 "Let's make some money!"
 Created: 1 msg
