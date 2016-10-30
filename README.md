@@ -31,21 +31,21 @@ libertalia> org mk President
 Created: 1 President
 libertalia> org
 1 President
-libertalia> org mk "Departmnet of Economy"
-Created: 2 Departmnet of Economy
+libertalia> org mk "Department of Economy"
+Created: 2 Department of Economy
 libertalia> org
 1 President
-2 Departmnet of Economy
+2 Department of Economy
 libertalia> org mv 2 1
-Updated: 2 Departmnet of Economy
+Updated: 2 Department of Economy
 libertalia> org
 1 President
-    2 Departmnet of Economy
+    2 Department of Economy
 libertalia> org mk "Academy of Sciences" 1
 Created: 3 Academy of Sciences
 libertalia> org
 1 President
-    2 Departmnet of Economy
+    2 Department of Economy
     3 Academy of Sciences
 libertalia> msg mk 1 2 "Let's make some money!"
 Created: 1 msg
