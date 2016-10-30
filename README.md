@@ -3,7 +3,8 @@ Libertalia is a tool to assist in planning your tasks using the Country model.
 # Installation
 1. Clone the repository
 2. Create MariaDB database named "libertalia" at localhost
-3. Configure the text editor you would like to use for editing files in the `~/.libertalia` file. So far, the only legit entry there is `editor=<editor_command>`. `<editor_command>` should be such that:
+3. Configure the text editor you would like to use for editing files in the `~/.libertalia/.config` file. So far, the only valid entry there is `editor=<editor_command>`.
+  `<editor_command>` should be such that:
     - It accepts one argument for opening the file: `<editor_command> <file_name>`
     - It is blocking, that is after entering it, the command prompt will not appear until you close the editor.
 4. Run it with `sbt run`
